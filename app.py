@@ -13,8 +13,16 @@ from langchain_community.vectorstores import DocArrayInMemorySearch
 from langchain_core.documents import Document
 from dotenv import load_dotenv
 
+# Load environment variables
 load_dotenv()
-openai_api_key ="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"
+
+# Retrieve the API key
+openai_api_key = os.getenv("OPENAI_API_KEY")
+
+# Check if API key is loaded
+if not openai_api_key:
+    st.error("OpenAI API key not found. Please set it in the .env file.")
+    st.stop()
 
 st.markdown(
     """
@@ -117,8 +125,8 @@ Question: {{input}}
     """
 )
 
+# Initialize the ChatOpenAI model
 llm = ChatOpenAI(api_key=openai_api_key, model_name="gpt-3.5-turbo", temperature=0.3)
-
 
 def is_out_of_context(answer):
     keywords = [
